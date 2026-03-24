@@ -7,7 +7,7 @@ interface FooterProps {
 }
 
 export default function Footer({ portfolioUser }: FooterProps) {
-  const displayName = portfolioUser?.name || 'PortfolioGen';
+  const displayName = portfolioUser?.name || 'Portfoliaxe';
   const social = [
     ...(portfolioUser?.socialLinks?.github ? [{ icon: Github, href: portfolioUser.socialLinks.github, label: 'GitHub' }] : []),
     ...(portfolioUser?.socialLinks?.linkedin ? [{ icon: Linkedin, href: portfolioUser.socialLinks.linkedin, label: 'LinkedIn' }] : []),
@@ -42,7 +42,7 @@ export default function Footer({ portfolioUser }: FooterProps) {
           </p>
           {portfolioUser && (
             <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
-              Built with <a href="/" className="underline" style={{ color: '#a78bfa' }}>PortfolioGen</a>
+              Built with <a href="/" className="underline" style={{ color: '#a78bfa' }}>Portfoliaxe</a>
             </p>
           )}
         </div>

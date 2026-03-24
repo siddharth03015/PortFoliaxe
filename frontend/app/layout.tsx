@@ -5,11 +5,11 @@ import { ThemeProvider } from 'next-themes';
 import { AuthProvider } from '@/lib/auth';
 
 export const metadata: Metadata = {
-  title: 'PortfolioGen — Create Your Professional Portfolio',
+  title: 'Portfoliaxe — Create Your Professional Portfolio',
   description: 'Build a stunning developer portfolio in minutes. Sign up, fill in your details, and share your portfolio link with the world.',
   keywords: ['Portfolio Generator', 'Developer Portfolio', 'Create Portfolio', 'Resume Builder'],
   openGraph: {
-    title: 'PortfolioGen — Create Your Professional Portfolio',
+    title: 'Portfoliaxe — Create Your Professional Portfolio',
     description: 'Build a stunning developer portfolio in minutes.',
     type: 'website',
   },

@@ -42,7 +42,7 @@ export default function Home() {
               <Code2 size={18} color="white" />
             </div>
             <span className="font-bold text-lg" style={{ fontFamily: 'Space Grotesk, sans-serif', color: 'var(--text-primary)' }}>
-              Portfolio<span className="gradient-text">Gen</span>
+              Portfoli<span className="gradient-text">axe</span>
             </span>
           </motion.div>
           <div className="flex items-center gap-3">
@@ -126,7 +126,7 @@ export default function Home() {
       <section style={{ background: 'var(--bg-secondary)', padding: '6rem 0' }}>
         <div className="max-w-7xl mx-auto px-6">
           <motion.div className="text-center mb-16" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
-            <span className="tag-chip mb-4 inline-block">Why PortfolioGen?</span>
+            <span className="tag-chip mb-4 inline-block">Why Portfoliaxe?</span>
             <h2 className="text-4xl md:text-5xl font-black" style={{ fontFamily: 'Space Grotesk', color: 'var(--text-primary)' }}>
               Everything You <span className="gradient-text">Need</span>
             </h2>
@@ -193,7 +193,7 @@ export default function Home() {
       <footer style={{ borderTop: '1px solid var(--border-card)', padding: '2rem 0' }}>
         <div className="max-w-7xl mx-auto px-6 text-center">
           <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
-            © {new Date().getFullYear()} PortfolioGen. Build with ❤️
+            © {new Date().getFullYear()} Portfoliaxe. Build with ❤️
           </p>
         </div>
       </footer>

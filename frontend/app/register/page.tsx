@@ -27,7 +27,7 @@ export default function RegisterPage() {
     setLoading(true);
     try {
       await register(form);
-      toast.success('Account created! Welcome to PortfolioGen 🚀');
+      toast.success('Account created! Welcome to Portfoliaxe 🚀');
       router.push('/admin');
     } catch (err: any) {
       toast.error(err?.response?.data?.message || 'Registration failed. Try again.');
