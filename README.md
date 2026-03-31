@@ -136,7 +136,7 @@ vercel
 3. Update `MONGODB_URI` in backend `.env`
 
 ---
-Live Link for the Dynamic Prtfolio Generator:-https://dynamic-portfolio-generator.vercel.app/
+Live Link for the Dynamic Portfolio Generator:-https://dynamic-portfolio-generator.vercel.app/
 
 ## ✨ Features
 
