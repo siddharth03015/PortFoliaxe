@@ -1,4 +1,4 @@
-# 🚀 Dhruv Kumar — Full Stack Developer Portfolio
+# Portfoliaxe — Full Stack Developer Portfolio
 
 A premium, futuristic developer portfolio built with **Next.js**, **Tailwind CSS v4**, **Framer Motion**, **React Three Fiber**, **Node.js**, **Express**, and **MongoDB**.
 
@@ -136,6 +136,7 @@ vercel
 3. Update `MONGODB_URI` in backend `.env`
 
 ---
+Live Link for the Dynamic Prtfolio Generator:-https://dynamic-portfolio-generator.vercel.app/
 
 ## ✨ Features
 
