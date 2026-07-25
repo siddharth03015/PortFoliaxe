@@ -266,14 +266,48 @@ export default function AdminDashboard() {
                   <label className="block text-xs font-medium mb-1.5" style={{ color: 'var(--text-secondary)' }}>Location</label>
                   <input value={profile.location} onChange={(e) => setProfile({ ...profile, location: e.target.value })} placeholder="India" style={inputStyle} />
                 </div>
-                <div>
-                  <label className="block text-xs font-medium mb-1.5" style={{ color: 'var(--text-secondary)' }}>Avatar URL or Upload</label>
-                  <div className="flex gap-2">
-                    <input value={profile.avatarUrl} onChange={(e) => setProfile({ ...profile, avatarUrl: e.target.value })} placeholder="https://..." style={{...inputStyle, flex: 1}} />
-                    <label className="btn-outline flex items-center justify-center cursor-pointer px-4 rounded-xl flex-shrink-0" style={{ padding: '0.6rem 1rem' }}>
-                      <Upload size={14} className={avatarUploading ? 'animate-bounce' : ''} />
+              </div>
+
+              {/* Avatar Upload Section */}
+              <div className="glass-card p-6">
+                <h3 className="text-sm font-bold mb-4" style={{ color: 'var(--text-primary)' }}>Profile Avatar</h3>
+                <div className="flex flex-col md:flex-row gap-6 items-start">
+                  {/* Avatar Preview */}
+                  <div className="flex-shrink-0">
+                    {(profile.avatarUrl || user?.avatarUrl) ? (
+                      <div className="w-32 h-32 rounded-2xl overflow-hidden" style={{ border: '2px solid var(--border-card)' }}>
+                        <img
+                          src={profile.avatarUrl?.startsWith('http') ? profile.avatarUrl : `${API_BASE}${profile.avatarUrl || user?.avatarUrl}`}
+                          alt="Avatar"
+                          className="w-full h-full object-cover"
+                          onError={(e) => { (e.target as HTMLImageElement).src = ''; }}
+                        />
+                      </div>
+                    ) : (
+                      <div className="w-32 h-32 rounded-2xl flex items-center justify-center" style={{ background: 'var(--bg-secondary)', border: '2px dashed var(--border-card)' }}>
+                        <UserCircle size={48} style={{ color: 'var(--text-muted)' }} />
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Upload Area */}
+                  <div className="flex-1 w-full">
+                    <label className="flex flex-col items-center justify-center w-full py-8 rounded-2xl cursor-pointer transition-all hover:border-purple-500/50"
+                      style={{ background: 'var(--bg-secondary)', border: '2px dashed var(--border-card)' }}>
+                      <Upload size={28} style={{ color: 'var(--text-muted)' }} className={avatarUploading ? 'animate-bounce' : ''} />
+                      <span className="text-sm font-medium mt-3" style={{ color: 'var(--text-secondary)' }}>
+                        {avatarUploading ? 'Uploading...' : 'Click to upload avatar'}
+                      </span>
+                      <span className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>
+                        PNG, JPG, GIF up to 5MB
+                      </span>
                       <input type="file" accept="image/*" onChange={handleAvatarUpload} className="hidden" disabled={avatarUploading} />
                     </label>
+
+                    <div className="mt-4">
+                      <label className="block text-xs font-medium mb-1.5" style={{ color: 'var(--text-secondary)' }}>Or paste an image URL</label>
+                      <input value={profile.avatarUrl} onChange={(e) => setProfile({ ...profile, avatarUrl: e.target.value })} placeholder="https://example.com/avatar.jpg" style={inputStyle} />
+                    </div>
                   </div>
                 </div>
               </div>
