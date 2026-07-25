@@ -7,7 +7,7 @@ import { Plus, Pencil, Trash2, LogOut, FolderOpen, BookOpen, Mail, X, Save, User
 import {
   getProjects, createProject, updateProject, deleteProject,
   getAllBlogPosts, createBlogPost, updateBlogPost, deleteBlogPost,
-  getContacts, updateProfile, uploadResume
+  getContacts, updateProfile, uploadResume, uploadAvatar
 } from '@/lib/api';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
@@ -31,6 +31,7 @@ export default function AdminDashboard() {
   const [profile, setProfile] = useState<any>({});
   const [profileSaving, setProfileSaving] = useState(false);
   const [resumeUploading, setResumeUploading] = useState(false);
+  const [avatarUploading, setAvatarUploading] = useState(false);
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) router.push('/admin/login');
@@ -118,6 +119,26 @@ export default function AdminDashboard() {
       toast.error('Upload failed.');
     } finally {
       setResumeUploading(false);
+    }
+  };
+
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      toast.error('Only image files allowed.');
+      return;
+    }
+    setAvatarUploading(true);
+    try {
+      const res = await uploadAvatar(file);
+      setProfile({ ...profile, avatarUrl: res.data.avatarUrl });
+      await refreshUser();
+      toast.success('Avatar uploaded! 🖼️');
+    } catch {
+      toast.error('Upload failed.');
+    } finally {
+      setAvatarUploading(false);
     }
   };
 
@@ -246,8 +267,14 @@ export default function AdminDashboard() {
                   <input value={profile.location} onChange={(e) => setProfile({ ...profile, location: e.target.value })} placeholder="India" style={inputStyle} />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium mb-1.5" style={{ color: 'var(--text-secondary)' }}>Avatar URL</label>
-                  <input value={profile.avatarUrl} onChange={(e) => setProfile({ ...profile, avatarUrl: e.target.value })} placeholder="https://..." style={inputStyle} />
+                  <label className="block text-xs font-medium mb-1.5" style={{ color: 'var(--text-secondary)' }}>Avatar URL or Upload</label>
+                  <div className="flex gap-2">
+                    <input value={profile.avatarUrl} onChange={(e) => setProfile({ ...profile, avatarUrl: e.target.value })} placeholder="https://..." style={{...inputStyle, flex: 1}} />
+                    <label className="btn-outline flex items-center justify-center cursor-pointer px-4 rounded-xl flex-shrink-0" style={{ padding: '0.6rem 1rem' }}>
+                      <Upload size={14} className={avatarUploading ? 'animate-bounce' : ''} />
+                      <input type="file" accept="image/*" onChange={handleAvatarUpload} className="hidden" disabled={avatarUploading} />
+                    </label>
+                  </div>
                 </div>
               </div>
               <div>

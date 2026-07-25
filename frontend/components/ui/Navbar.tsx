@@ -3,7 +3,8 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from 'next-themes';
-import { Sun, Moon, Menu, X, Code2 } from 'lucide-react';
+import { Sun, Moon, Menu, X, Code2, Share2 } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 const navLinks = [
   { label: 'About', href: '#about' },
@@ -30,6 +31,13 @@ export default function Navbar({ portfolioUser }: NavbarProps) {
     window.addEventListener('scroll', handler);
     return () => window.removeEventListener('scroll', handler);
   }, []);
+
+  const handleShare = () => {
+    if (typeof window !== 'undefined') {
+      navigator.clipboard.writeText(window.location.href);
+      toast.success('Portfolio link copied to clipboard! 🔗');
+    }
+  };
 
   return (
     <motion.nav
@@ -66,9 +74,9 @@ export default function Navbar({ portfolioUser }: NavbarProps) {
         </ul>
 
         <div className="flex items-center gap-3">
-          <motion.button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+          <motion.button onClick={handleShare}
             className="glass-card p-2 rounded-lg cursor-pointer" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-            {theme === 'dark' ? <Sun size={16} color="#f59e0b" /> : <Moon size={16} color="#7c3aed" />}
+            <Share2 size={16} style={{ color: 'var(--text-secondary)' }} />
           </motion.button>
           <motion.button className="md:hidden glass-card p-2 rounded-lg cursor-pointer"
             onClick={() => setMenuOpen(!menuOpen)} whileTap={{ scale: 0.9 }}>

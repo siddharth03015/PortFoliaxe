@@ -33,6 +33,13 @@ export const uploadResume = (file: File) => {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
 };
+export const uploadAvatar = (file: File) => {
+  const formData = new FormData();
+  formData.append('avatar', file);
+  return api.post('/profile/avatar', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+};
 
 // Projects
 export const getProjects = (category?: string, userId?: string) =>

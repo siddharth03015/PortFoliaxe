@@ -37,6 +37,9 @@ export default function AboutSection({ name, bio, aboutText, location, title, av
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-100px' });
 
+  const API_BASE = process.env.NEXT_PUBLIC_API_URL?.replace('/api', '') || 'http://localhost:5000';
+  const resolvedAvatarUrl = avatarUrl?.startsWith('/') ? `${API_BASE}${avatarUrl}` : avatarUrl;
+
   if (!name && !bio && skills.length === 0 && timeline.length === 0) return null;
 
   return (
@@ -53,9 +56,9 @@ export default function AboutSection({ name, bio, aboutText, location, title, av
           <div>
             <motion.div className="glass-card p-8 mb-8" initial={{ opacity: 0, x: -30 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.7, delay: 0.2 }}>
               <div className="flex items-center gap-4 mb-6">
-                {avatarUrl && (
+                {resolvedAvatarUrl && (
                   <div className="float-animation flex-shrink-0 relative" style={{ width: 80, height: 80 }}>
-                    <img src={avatarUrl} alt={name} style={{ width: 80, height: 80, borderRadius: '18px', objectFit: 'cover', objectPosition: 'center top',
+                    <img src={resolvedAvatarUrl} alt={name} style={{ width: 80, height: 80, borderRadius: '18px', objectFit: 'cover', objectPosition: 'center top',
                       border: '2px solid rgba(124,58,237,0.5)', boxShadow: '0 0 24px rgba(124,58,237,0.35)' }} />
                     <span style={{ position: 'absolute', bottom: 4, right: 4, width: 12, height: 12, borderRadius: '50%', background: '#22c55e', border: '2px solid var(--bg-card)', display: 'block' }} />
                   </div>

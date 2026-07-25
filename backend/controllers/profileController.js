@@ -35,7 +35,6 @@ const updateProfile = async (req, res) => {
   }
 };
 
-// POST /api/profile/resume — authenticated, upload resume PDF
 const uploadResume = async (req, res) => {
   try {
     if (!req.file) {
@@ -44,6 +43,20 @@ const uploadResume = async (req, res) => {
     const resumeUrl = `/uploads/resumes/${req.file.filename}`;
     const user = await User.findByIdAndUpdate(req.user.id, { resumeUrl }, { new: true }).select('-password');
     res.json({ message: 'Resume uploaded successfully.', resumeUrl, user });
+  } catch (err) {
+    res.status(500).json({ message: 'Upload failed.', error: err.message });
+  }
+};
+
+// POST /api/profile/avatar — authenticated, upload avatar image
+const uploadAvatar = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: 'No file uploaded. Please upload an image.' });
+    }
+    const avatarUrl = `/uploads/avatars/${req.file.filename}`;
+    const user = await User.findByIdAndUpdate(req.user.id, { avatarUrl }, { new: true }).select('-password');
+    res.json({ message: 'Avatar uploaded successfully.', avatarUrl, user });
   } catch (err) {
     res.status(500).json({ message: 'Upload failed.', error: err.message });
   }
@@ -67,4 +80,4 @@ const getResume = async (req, res) => {
   }
 };
 
-module.exports = { getProfile, updateProfile, uploadResume, getResume };
+module.exports = { getProfile, updateProfile, uploadResume, getResume, uploadAvatar };
