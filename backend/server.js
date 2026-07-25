@@ -18,7 +18,19 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:3000',
+  origin: function (origin, callback) {
+    const allowedOrigins = [
+      'http://localhost:3000',
+      'https://portfoliaxe.pages.dev',
+      process.env.CLIENT_URL,
+    ].filter(Boolean);
+    // Allow requests with no origin (mobile apps, curl, etc.)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(null, true); // Allow all origins for now; tighten in production if needed
+    }
+  },
   credentials: true,
 }));
 app.use(express.json({ limit: '10mb' }));
