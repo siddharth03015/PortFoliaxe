@@ -13,6 +13,14 @@ const userSchema = new mongoose.Schema({
   location: { type: String, default: '' },
   avatarUrl: { type: String, default: '' },
   resumeUrl: { type: String, default: '' },
+  resumeData: {
+    data: Buffer,
+    contentType: String
+  },
+  avatarData: {
+    data: Buffer,
+    contentType: String
+  },
   socialLinks: {
     github: { type: String, default: '' },
     linkedin: { type: String, default: '' },

@@ -40,9 +40,23 @@ const uploadResume = async (req, res) => {
     if (!req.file) {
       return res.status(400).json({ message: 'No file uploaded. Please upload a PDF.' });
     }
-    const resumeUrl = `/uploads/resumes/${req.file.filename}`;
-    const user = await User.findByIdAndUpdate(req.user.id, { resumeUrl }, { new: true }).select('-password');
-    res.json({ message: 'Resume uploaded successfully.', resumeUrl, user });
+    const user = await User.findById(req.user.id);
+    if (!user) return res.status(404).json({ message: 'User not found.' });
+    
+    user.resumeData = {
+      data: req.file.buffer,
+      contentType: req.file.mimetype
+    };
+    user.resumeUrl = `/api/profile/${user.username}/resume`;
+    await user.save();
+    
+    // We must omit the huge data buffer when sending back the user object
+    const userObject = user.toObject();
+    delete userObject.password;
+    delete userObject.resumeData;
+    delete userObject.avatarData;
+    
+    res.json({ message: 'Resume uploaded successfully.', resumeUrl: user.resumeUrl, user: userObject });
   } catch (err) {
     res.status(500).json({ message: 'Upload failed.', error: err.message });
   }
@@ -54,9 +68,22 @@ const uploadAvatar = async (req, res) => {
     if (!req.file) {
       return res.status(400).json({ message: 'No file uploaded. Please upload an image.' });
     }
-    const avatarUrl = `/uploads/avatars/${req.file.filename}`;
-    const user = await User.findByIdAndUpdate(req.user.id, { avatarUrl }, { new: true }).select('-password');
-    res.json({ message: 'Avatar uploaded successfully.', avatarUrl, user });
+    const user = await User.findById(req.user.id);
+    if (!user) return res.status(404).json({ message: 'User not found.' });
+
+    user.avatarData = {
+      data: req.file.buffer,
+      contentType: req.file.mimetype
+    };
+    user.avatarUrl = `/api/profile/${user.username}/avatar`;
+    await user.save();
+
+    const userObject = user.toObject();
+    delete userObject.password;
+    delete userObject.resumeData;
+    delete userObject.avatarData;
+
+    res.json({ message: 'Avatar uploaded successfully.', avatarUrl: user.avatarUrl, user: userObject });
   } catch (err) {
     res.status(500).json({ message: 'Upload failed.', error: err.message });
   }
@@ -65,19 +92,32 @@ const uploadAvatar = async (req, res) => {
 // GET /api/profile/:username/resume — public, download resume
 const getResume = async (req, res) => {
   try {
-    const user = await User.findOne({ username: req.params.username.toLowerCase() }).select('resumeUrl name');
-    if (!user || !user.resumeUrl) {
+    const user = await User.findOne({ username: req.params.username.toLowerCase() }).select('resumeData name username');
+    if (!user || !user.resumeData || !user.resumeData.data) {
       return res.status(404).json({ message: 'Resume not found.' });
     }
-    const filePath = path.join(__dirname, '..', user.resumeUrl);
-    if (!fs.existsSync(filePath)) {
-      return res.status(404).json({ message: 'Resume file not found.' });
-    }
-    const filename = `${user.name || user.username}_resume.pdf`;
-    res.download(filePath, filename);
+    
+    res.set('Content-Type', user.resumeData.contentType);
+    res.set('Content-Disposition', `attachment; filename="${user.name || user.username}_resume.pdf"`);
+    res.send(user.resumeData.data);
   } catch (err) {
     res.status(500).json({ message: 'Server error.', error: err.message });
   }
 };
 
-module.exports = { getProfile, updateProfile, uploadResume, getResume, uploadAvatar };
+// GET /api/profile/:username/avatar — public, view avatar
+const getAvatar = async (req, res) => {
+  try {
+    const user = await User.findOne({ username: req.params.username.toLowerCase() }).select('avatarData');
+    if (!user || !user.avatarData || !user.avatarData.data) {
+      return res.status(404).json({ message: 'Avatar not found.' });
+    }
+    
+    res.set('Content-Type', user.avatarData.contentType);
+    res.send(user.avatarData.data);
+  } catch (err) {
+    res.status(500).json({ message: 'Server error.', error: err.message });
+  }
+};
+
+module.exports = { getProfile, updateProfile, uploadResume, getResume, uploadAvatar, getAvatar };

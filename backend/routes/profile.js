@@ -3,7 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-const { getProfile, updateProfile, uploadResume, getResume, uploadAvatar } = require('../controllers/profileController');
+const { getProfile, updateProfile, uploadResume, getResume, uploadAvatar, getAvatar } = require('../controllers/profileController');
 const authMiddleware = require('../middleware/auth');
 
 // Multer config for resume and avatar uploads
@@ -16,21 +16,8 @@ if (!fs.existsSync(avatarsDir)) {
   fs.mkdirSync(avatarsDir, { recursive: true });
 }
 
-const resumeStorage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, uploadsDir),
-  filename: (req, file, cb) => {
-    const uniqueName = `${req.user.id}_${Date.now()}${path.extname(file.originalname)}`;
-    cb(null, uniqueName);
-  },
-});
-
-const avatarStorage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, avatarsDir),
-  filename: (req, file, cb) => {
-    const uniqueName = `${req.user.id}_avatar_${Date.now()}${path.extname(file.originalname)}`;
-    cb(null, uniqueName);
-  },
-});
+const resumeStorage = multer.memoryStorage();
+const avatarStorage = multer.memoryStorage();
 
 const uploadResumeMiddleware = multer({
   storage: resumeStorage,
@@ -59,6 +46,7 @@ const uploadAvatarMiddleware = multer({
 // Public routes
 router.get('/:username', getProfile);
 router.get('/:username/resume', getResume);
+router.get('/:username/avatar', getAvatar);
 
 // Authenticated routes
 router.put('/', authMiddleware, updateProfile);
