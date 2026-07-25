@@ -112,9 +112,9 @@ export default function Home() {
 
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }}
               className="flex flex-wrap items-center justify-center gap-4">
-              <Link href="/register">
+              <Link href={isAuthenticated ? "/admin" : "/register"}>
                 <motion.button className="btn-primary flex items-center gap-2 text-base px-8 py-3" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Sparkles size={18} /> Create Your Portfolio <ArrowRight size={18} />
+                  <Sparkles size={18} /> {isAuthenticated ? "Go to Dashboard" : "Create Your Portfolio"} <ArrowRight size={18} />
                 </motion.button>
               </Link>
             </motion.div>
@@ -180,9 +180,9 @@ export default function Home() {
               Ready to Build Your <span className="gradient-text">Portfolio?</span>
             </h2>
             <p className="mb-8" style={{ color: 'var(--text-muted)' }}>Join and create a portfolio that stands out. It's free and takes just minutes.</p>
-            <Link href="/register">
+            <Link href={isAuthenticated ? "/admin" : "/register"}>
               <motion.button className="btn-primary flex items-center gap-2 mx-auto text-base px-8 py-3" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                Get Started Now <ArrowRight size={18} />
+                {isAuthenticated ? "Go to Dashboard" : "Get Started Now"} <ArrowRight size={18} />
               </motion.button>
             </Link>
           </motion.div>
